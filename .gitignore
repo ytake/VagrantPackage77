@@ -1,0 +1,7 @@
+.vagrant/
+/after.sh
+vagrant.yaml
+
+# for PHPStorm
+.idea/
+app
