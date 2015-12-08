@@ -2,22 +2,28 @@
 ip: "192.168.10.10"
 memory: 2048
 cpus: 1
-hostname: vagrant-php70
-name: vagrant-php70
-provider: virtualbox
+hostname: vagrant-package77
+name: vagrant-package77
 
 authorize: ~/.ssh/id_rsa.pub
 
 keys:
-    - ~/.ssh/id_rsa
+  - ~/.ssh/id_rsa
 
 folders:
-    - map: ~/Code
-      to: /home/vagrant/Code
+  - map: ~/Code
+    to: /home/vagrant/Code
 sites:
-    - map: vagrant-php70.app
-      to: "/home/vagrant/Code/public"
+  - map: vagrant-package77
+    to: "/home/vagrant/Code/public"
 
 # create database(optional)
 # databases:
-#    - vagrant-php70
+#    - vagrant-package77
+
+# Add any environment variables.
+# variables:
+#    - key: 'APP_ENV'
+#      value: 'local'
+#    - key: 'APP_DEBUG'
+#      value: 'true'

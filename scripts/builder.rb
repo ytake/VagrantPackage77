@@ -1,7 +1,7 @@
 class Builder
   def Builder.configure(config, settings)
     # Set The VM Provider
-    ENV['VAGRANT_DEFAULT_PROVIDER'] = settings["provider"] ||= "virtualbox"
+    ENV['VAGRANT_DEFAULT_PROVIDER'] = "virtualbox"
 
     # Configure Local Variable To Access Scripts From Remote Location
     scriptDir = File.dirname(__FILE__)
@@ -11,7 +11,7 @@ class Builder
 
     # Configure The Box
     config.vm.box = settings["box"] ||= "bento/centos-7.1"
-    config.vm.hostname = settings["hostname"] ||= "vagrant-php70"
+    config.vm.hostname = settings["hostname"] ||= "vagrant-package77"
 
     # Configure A Private Network IP
     config.vm.network :private_network, ip: settings["ip"] ||= "192.168.10.10"
@@ -25,7 +25,7 @@ class Builder
 
     # Configure A Few VirtualBox Settings
     config.vm.provider "virtualbox" do |vb|
-      vb.name = settings["name"] ||= "vagrant-php70"
+      vb.name = settings["name"] ||= "vagrant-package77"
       vb.customize ["modifyvm", :id, "--memory", settings["memory"] ||= "2048"]
       vb.customize ["modifyvm", :id, "--cpus", settings["cpus"] ||= "1"]
       vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
@@ -109,21 +109,10 @@ class Builder
     end
 
     settings["sites"].each do |site|
-      type = site["type"] ||= "laravel"
-
       config.vm.provision "shell" do |s|
-        s.path = scriptDir + "/serve-#{type}.sh"
+        s.path = scriptDir + "/web-server.sh"
         s.args = [site["map"], site["to"], site["port"] ||= "80", site["ssl"] ||= "443"]
       end
-
-      # Configure The Cron Schedule
-      if (site.has_key?("schedule") && site["schedule"])
-        config.vm.provision "shell" do |s|
-          s.path = scriptDir + "/cron-schedule.sh"
-          s.args = [site["map"].tr('^A-Za-z0-9', ''), site["to"]]
-        end
-      end
-
     end
 
     # Configure All Of The Configured Databases
@@ -144,7 +133,7 @@ class Builder
     if settings.has_key?("variables")
       settings["variables"].each do |var|
         config.vm.provision "shell" do |s|
-          s.inline = "echo \"\nenv[$1] = '$2'\" >> /etc/php5/fpm/php-fpm.conf"
+          s.inline = "echo \"\nenv[$1] = '$2'\" >> /etc/php-fpm.d/www.conf"
           s.args = [var["key"], var["value"]]
         end
 
@@ -153,9 +142,8 @@ class Builder
           s.args = [var["key"], var["value"]]
         end
       end
-
       config.vm.provision "shell" do |s|
-        s.inline = "service php5-fpm restart"
+        s.inline = "/bin/systemctl restart php-fpm"
       end
     end
 

@@ -20,6 +20,9 @@ require File.expand_path(File.dirname(__FILE__) + '/scripts/builder.rb')
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure(2) do |config|
+
+  config.vm.boot_timeout = 100
+
   config.vm.provision 'shell', path: './provision/update.sh'
   config.vm.provision :reload
   config.vm.provision 'shell', path: './provision/database.sh'

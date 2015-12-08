@@ -2,9 +2,11 @@
 
 yum remove mysql*
 
+yum -y remove mariadb-libs
+
 wget http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
 rpm -Uvh mysql-community-release-el6-5.noarch.rpm
-sudo yum install -y mysql mysql-devel mysql-server mysql-libs
+yum install -y mysql mysql-devel mysql-server mysql-libs
 
 # for backup ini
 cp /etc/my.cnf /etc/my.cnf.backup
@@ -33,7 +35,11 @@ sudo yum install -y memcached memcached-devel
 /bin/systemctl restart memcached
 
 # redis
-sudo yum install -y redis
+sudo yum --enablerepo=remi,epel install -y redis
+
+sed -i "s/daemonize no/daemonize yes/" /etc/redis.conf
+sed -i "s/appendonly no/appendonly yes/" /etc/redis.conf
+
 /bin/systemctl enable redis
 /bin/systemctl start redis
 
@@ -82,3 +88,13 @@ sudo /usr/share/elasticsearch/bin/plugin -install elasticsearch/elasticsearch-an
 /bin/systemctl start elasticsearch.service
 /bin/systemctl daemon-reload
 /bin/systemctl enable elasticsearch.service
+
+# install couchbase
+wget http://packages.couchbase.com/releases/4.1.0-dp/couchbase-server-4.1.0-dp-centos7.x86_64.rpm
+rpm -ivh couchbase-server-4.1.0-dp-centos7.x86_64.rpm
+
+# http://your_configure_ip:8091/
+/bin/systemctl enable couchbase-server
+/bin/systemctl start couchbase-server
+
+rm -rf couchbase-server-4.1.0-dp-centos7.x86_64.rpm

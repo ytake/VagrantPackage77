@@ -2,4 +2,4 @@
 
 # If you would like to do some extra provisioning you may
 # add any commands you wish to this file and they will
-# be run after the vagrant-php56 machine is provisioned.
+# be run after the vagrant-package77 machine is provisioned.
