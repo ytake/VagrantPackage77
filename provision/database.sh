@@ -66,9 +66,9 @@ echo "
 # for elasticsearch
 rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
 cat > /etc/yum.repos.d/elasticsearch.repo << EOF
-[elasticsearch-1.7]
-name=Elasticsearch repository for 1.7.x packages
-baseurl=http://packages.elastic.co/elasticsearch/1.7/centos
+[elasticsearch-2.x]
+name=Elasticsearch repository for 2.x packages
+baseurl=http://packages.elastic.co/elasticsearch/2.x/centos
 gpgcheck=1
 gpgkey=http://packages.elastic.co/GPG-KEY-elasticsearch
 enabled=1
@@ -78,12 +78,11 @@ sudo yum install -y elasticsearch
 
 sed -i "s/#http.port: 9200/http.port: 9200/" /etc/elasticsearch/elasticsearch.yml
 
-sudo /usr/share/elasticsearch/bin/plugin -install mobz/elasticsearch-head
-sudo /usr/share/elasticsearch/bin/plugin -install royrusso/elasticsearch-HQ
-sudo /usr/share/elasticsearch/bin/plugin -install polyfractal/elasticsearch-inquisitor
-sudo /usr/share/elasticsearch/bin/plugin -install lukas-vlcek/bigdesk
-sudo /usr/share/elasticsearch/bin/plugin -install elasticsearch/elasticsearch-analysis-kuromoji/2.7.0
-sudo /usr/share/elasticsearch/bin/plugin -install elasticsearch/elasticsearch-analysis-icu/2.7.0
+sudo /usr/share/elasticsearch/bin/plugin install mobz/elasticsearch-head
+sudo /usr/share/elasticsearch/bin/plugin install royrusso/elasticsearch-HQ
+sudo /usr/share/elasticsearch/bin/plugin install polyfractal/elasticsearch-inquisitor
+sudo /usr/share/elasticsearch/bin/plugin install analysis-kuromoji
+sudo /usr/share/elasticsearch/bin/plugin install analysis-icu
 
 /bin/systemctl start elasticsearch.service
 /bin/systemctl daemon-reload

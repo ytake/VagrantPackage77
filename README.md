@@ -1,5 +1,5 @@
 # VagrantPackage77
-for php7.0(CentOS7)
+for php7.0 and HipHop VM(CentOS7)
 
 *require*
  - VirtualBox
@@ -8,13 +8,14 @@ for php7.0(CentOS7)
 use bento/centos-7.1
 
  - MySQL 5.6
- - php 7.0.0(remi) / composer
+ - php 7.0.1(remi) / composer
+ - HipHop VM 3.9.0
  - node.js 5.*
  - gulp, grunt
  - Redis(default)
  - memcached(default)
  - fluentd
- - elasticsearch (1.7 / port 9200)
+ - elasticsearch (2.0 / port 9200)
  - couchbase 4.1 (port 8091)
 
 ## php extension

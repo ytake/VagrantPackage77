@@ -11,6 +11,7 @@ class Builder
 
     # Configure The Box
     config.vm.box = settings["box"] ||= "bento/centos-7.1"
+    config.vm.box_version = settings["version"] ||= ">= 0"
     config.vm.hostname = settings["hostname"] ||= "vagrant-package77"
 
     # Configure A Private Network IP
@@ -109,8 +110,15 @@ class Builder
     end
 
     settings["sites"].each do |site|
+
+      type = site["type"] ||= "php"
+
+      if (site.has_key?("hhvm") && site["hhvm"])
+        type = "hhvm"
+      end
+
       config.vm.provision "shell" do |s|
-        s.path = scriptDir + "/web-server.sh"
+        s.path = scriptDir + "/web-server-#{type}.sh"
         s.args = [site["map"], site["to"], site["port"] ||= "80", site["ssl"] ||= "443"]
       end
     end
@@ -122,6 +130,18 @@ class Builder
           s.path = scriptDir + "/create-mysql.sh"
           s.args = [db]
         end
+      end
+    end
+
+    # Configure Elasticsearch
+    if settings.has_key?("elasticsearch")
+      esPort = settings["elasticsearch"]["port"] ||= "9200"
+      config.vm.provision "shell" do |s|
+        s.inline = "sed -i \"s/#http.port: 9200/http.port: $1/\" /etc/elasticsearch/elasticsearch.yml"
+        s.args = [esPort]
+      end
+      config.vm.provision "shell" do |s|
+        s.inline = "/bin/systemctl restart elasticsearch"
       end
     end
 

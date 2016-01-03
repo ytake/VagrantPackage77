@@ -41,6 +41,9 @@ EOF
 
 /bin/systemctl enable php-fpm
 /bin/systemctl restart php-fpm
+/bin/systemctl enable hhvm
+/bin/systemctl start hhvm
+/bin/systemctl status hhvm
 /bin/systemctl start  nginx
 /bin/systemctl enable nginx
 /bin/systemctl restart nginx

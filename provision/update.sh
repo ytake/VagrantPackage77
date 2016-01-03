@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
+# Update CentOS first
 yum update
 
-rpm -Uvh http://mirror.oss.ou.edu/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+# Need to get EPEL repositories
+rpm -Uvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
 
 yum install -y telnet
+
 ## to japanese
 yum -y install ibus-kkc vlgothic-*
 localectl set-locale LANG=ja_JP.UTF-8
@@ -24,6 +27,7 @@ cp /vagrant/rewrites/selinux.conf /etc/selinux/config
 setenforce 0
 
 sudo yum install -y git
+sudo yum install -y expect
 
 # openssl
 sudo yum install -y openssl-devel
