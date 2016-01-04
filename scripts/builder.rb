@@ -49,7 +49,8 @@ class Builder
         80   => 8000,
         443  => 44300,
         3306 => 33060,
-        5432 => 54320
+        5432 => 54320,
+        27017 => 47017
     }
 
     # Use Default Port Forwarding Unless Overridden
