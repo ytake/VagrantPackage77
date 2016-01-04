@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-wget http://copr.fedoraproject.org/coprs/no1youknowz/hhvm-repo/repo/epel-7/no1youknowz-hhvm-repo-epel-7.repo -O /etc/yum.repos.d/no1youknowz-hhvm-repo-epel-7.repo
+wget https://copr.fedoraproject.org/coprs/no1youknowz/hhvm-repo/repo/epel-7/no1youknowz-hhvm-repo-epel-7.repo -O /etc/yum.repos.d/no1youknowz-hhvm-repo-epel-7.repo
 yum install -y hhvm
 
 echo "hhvm.server.user = vagrant" >> /etc/hhvm/server.ini
