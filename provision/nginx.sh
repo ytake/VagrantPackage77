@@ -52,3 +52,8 @@ dd if=/dev/zero of=/EMPTY bs=1M
 rm -f /EMPTY
 sync
 
+# for apache
+sudo yum install -y httpd mod_fcgid
+
+sed -i "s/User apache/User vagrant/" /etc/httpd/conf/httpd.conf
+sed -i "s/Group apache/Group vagrant/" /etc/httpd/conf/httpd.conf

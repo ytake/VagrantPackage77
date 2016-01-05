@@ -1,4 +1,4 @@
-# VagrantPackage77
+# VagrantPackage77 (Gardening)
 for php7.0 and HipHop VM(CentOS7)
 
 *require*
@@ -15,7 +15,7 @@ use bento/centos-7.1
  - Redis(default)
  - memcached(default)
  - fluentd
- - elasticsearch (2.0 / port 9200)
+ - elasticsearch (2.1 / port 9200)
  - couchbase 4.1 (port 8091)
 
 ## php extension
@@ -91,7 +91,7 @@ Zend OPcache
 
 ## MySQL
 
- - user:vagrantpackage77
+ - user:gardening
  - password:secret
 
 ## Xdebug
@@ -123,9 +123,8 @@ for laravel, lumen (/etc/td-agent/td-agent.conf)
  - mobz/elasticsearch-head
  - royrusso/elasticsearch-HQ
  - polyfractal/elasticsearch-inquisitor
- - lukas-vlcek/bigdesk
- - elasticsearch/elasticsearch-analysis-kuromoji/2.7.0
- - elasticsearch/elasticsearch-analysis-icu/2.7.0
+ - analysis-kuromoji
+ - analysis-icu
 
 ## couchbase
 
@@ -136,4 +135,3 @@ http://your_configure_ip:8091/
 /etc/redis.conf
  - daemonize yes
  - appendonly yes
-

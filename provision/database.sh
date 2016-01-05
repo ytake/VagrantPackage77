@@ -19,12 +19,12 @@ sed -i '/^bind-address/s/bind-address.*=.*/bind-address = 0.0.0.0/' /etc/my.cnf
 mysql --user="root" -e "set password = password('secret');"
 mysql --user="root" --password="secret" -e "DROP USER ''@'localhost';"
 mysql --user="root" --password="secret" -e "GRANT ALL ON *.* TO root@'0.0.0.0' IDENTIFIED BY 'secret' WITH GRANT OPTION;"
-mysql --user="root" --password="secret" -e "CREATE USER 'vagrantphp70'@'0.0.0.0' IDENTIFIED BY 'secret';"
-mysql --user="root" --password="secret" -e "GRANT ALL ON *.* TO 'vagrantphp70'@'0.0.0.0' IDENTIFIED BY 'secret' WITH GRANT OPTION;"
-mysql --user="root" --password="secret" -e "GRANT ALL ON *.* TO 'vagrantphp70'@'%' IDENTIFIED BY 'secret' WITH GRANT OPTION;"
+mysql --user="root" --password="secret" -e "CREATE USER 'gardening'@'0.0.0.0' IDENTIFIED BY 'secret';"
+mysql --user="root" --password="secret" -e "GRANT ALL ON *.* TO 'gardening'@'0.0.0.0' IDENTIFIED BY 'secret' WITH GRANT OPTION;"
+mysql --user="root" --password="secret" -e "GRANT ALL ON *.* TO 'gardening'@'%' IDENTIFIED BY 'secret' WITH GRANT OPTION;"
 mysql --user="root" --password="secret" -e "FLUSH PRIVILEGES;"
-mysql --user="root" --password="secret" -e "CREATE DATABASE vagrantphp70;"
-mysql --user="root" --password="secret" -e  "set password for 'vagrantphp70'@'localhost' = password('secret');"
+mysql --user="root" --password="secret" -e "CREATE DATABASE gardening;"
+mysql --user="root" --password="secret" -e  "set password for 'gardening'@'localhost' = password('secret');"
 
 /bin/systemctl restart mysqld.service
 
@@ -40,8 +40,8 @@ sudo /usr/pgsql-9.4/bin/postgresql94-setup initdb
 
 sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /var/lib/pgsql/9.4/data/postgresql.conf
 echo "host    all             all             10.0.2.2/32               md5" | tee -a /var/lib/pgsql/9.4/data/pg_hba.conf
-sudo -u postgres psql -c "CREATE ROLE homegarden LOGIN UNENCRYPTED PASSWORD 'secret' SUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;"
-sudo -u postgres /usr/bin/createdb --echo --owner=homegarden homegarden
+sudo -u postgres psql -c "CREATE ROLE gardening LOGIN UNENCRYPTED PASSWORD 'secret' SUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;"
+sudo -u postgres /usr/bin/createdb --echo --owner=gardening gardening
 /bin/systemctl restart postgresql-9.4.service
 
 rm -rf pgdg-centos94-9.4-2.noarch.rpm
@@ -66,8 +66,7 @@ rm -rf mysql-community-release-el6-5.noarch.rpm
 # install fluentd
 sudo curl -L https://toolbelt.treasuredata.com/sh/install-redhat-td-agent2.sh | sh
 
-echo " 
-## match tag=local.** (for laravel log develop)
+echo "
 <match local.**>
   type stdout
 </match>

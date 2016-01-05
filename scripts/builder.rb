@@ -12,7 +12,7 @@ class Builder
     # Configure The Box
     config.vm.box = settings["box"] ||= "bento/centos-7.1"
     config.vm.box_version = settings["version"] ||= ">= 0"
-    config.vm.hostname = settings["hostname"] ||= "vagrant-package77"
+    config.vm.hostname = settings["hostname"] ||= "gardening"
 
     # Configure A Private Network IP
     config.vm.network :private_network, ip: settings["ip"] ||= "192.168.10.10"
@@ -26,7 +26,7 @@ class Builder
 
     # Configure A Few VirtualBox Settings
     config.vm.provider "virtualbox" do |vb|
-      vb.name = settings["name"] ||= "vagrant-package77"
+      vb.name = settings["name"] ||= "gardening"
       vb.customize ["modifyvm", :id, "--memory", settings["memory"] ||= "2048"]
       vb.customize ["modifyvm", :id, "--cpus", settings["cpus"] ||= "1"]
       vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
@@ -131,6 +131,11 @@ class Builder
           s.path = scriptDir + "/create-mysql.sh"
           s.args = [db]
         end
+
+        config.vm.provision "shell" do |s|
+          s.path = scriptDir + "/create-postgres.sh"
+          s.args = [db]
+        end
       end
     end
 
@@ -159,7 +164,7 @@ class Builder
         end
 
         config.vm.provision "shell" do |s|
-          s.inline = "echo \"\n# Set Homestead Environment Variable\nexport $1=$2\" >> /home/vagrant/.profile"
+          s.inline = "echo \"\n# Set Gardening Environment Variable\nexport $1=$2\" >> /home/vagrant/.profile"
           s.args = [var["key"], var["value"]]
         end
       end
