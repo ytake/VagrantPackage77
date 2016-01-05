@@ -27,6 +27,8 @@ Vagrant.configure(2) do |config|
   config.vm.provision :reload
   config.vm.provision 'shell', path: './provision/database.sh'
   config.vm.provision :reload
+  config.vm.provision 'shell', path: './provision/doucument_database.sh'
+  config.vm.provision :reload
   config.vm.provision 'shell', path: './provision/php.sh'
   config.vm.provision 'shell', path: './provision/hhvm.sh'
   config.vm.provision :reload

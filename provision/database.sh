@@ -28,7 +28,25 @@ mysql --user="root" --password="secret" -e  "set password for 'vagrantphp70'@'lo
 
 /bin/systemctl restart mysqld.service
 
-# memcached
+# for postgresql
+wget http://yum.postgresql.org/9.4/redhat/rhel-7-x86_64/pgdg-centos94-9.4-2.noarch.rpm
+
+rpm -ivh pgdg-centos94-9.4-2.noarch.rpm
+sudo yum -y install postgresql94-server postgresql94-devel postgresql94-contrib
+
+sudo /usr/pgsql-9.4/bin/postgresql94-setup initdb
+/bin/systemctl enable postgresql-9.4.service
+/bin/systemctl start postgresql-9.4.service
+
+sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /var/lib/pgsql/9.4/data/postgresql.conf
+echo "host    all             all             10.0.2.2/32               md5" | tee -a /var/lib/pgsql/9.4/data/pg_hba.conf
+sudo -u postgres psql -c "CREATE ROLE homegarden LOGIN UNENCRYPTED PASSWORD 'secret' SUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;"
+sudo -u postgres /usr/bin/createdb --echo --owner=homegarden homegarden
+/bin/systemctl restart postgresql-9.4.service
+
+rm -rf pgdg-centos94-9.4-2.noarch.rpm
+
+# for memcached
 sudo yum install -y memcached memcached-devel
 
 /bin/systemctl enable memcached
@@ -87,26 +105,3 @@ sudo /usr/share/elasticsearch/bin/plugin install analysis-icu
 /bin/systemctl start elasticsearch.service
 /bin/systemctl daemon-reload
 /bin/systemctl enable elasticsearch.service
-
-# install couchbase
-wget http://packages.couchbase.com/releases/4.1.0-dp/couchbase-server-4.1.0-dp-centos7.x86_64.rpm
-rpm -ivh couchbase-server-4.1.0-dp-centos7.x86_64.rpm
-
-# http://your_configure_ip:8091/
-/bin/systemctl enable couchbase-server
-/bin/systemctl start couchbase-server
-
-rm -rf couchbase-server-4.1.0-dp-centos7.x86_64.rpm
-
-#install mongodb
-cat > /etc/yum.repos.d/mongodb-org-3.2.repo << EOF
-[mongodb-org-3.2]
-name=MongoDB Repository
-baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.2/x86_64/
-gpgcheck=0
-enabled=1
-EOF
-
-sudo yum install -y mongodb-org
-/bin/systemctl enable mongod
-/bin/systemctl start mongod
