@@ -20,7 +20,7 @@ sed -i "s/;date.timezone.*/date.timezone = Asia\/Tokyo/" /etc/php.ini
 # for xdebug
 echo "xdebug.remote_enable = 1" >> /etc/php.d/15-xdebug.ini
 echo "xdebug.remote_connect_back = 1" >> /etc/php.d/15-xdebug.ini
-echo "xdebug.remote_port = 9000" >> /etc/php.d/15-xdebug.ini
+echo "xdebug.remote_port = 9080" >> /etc/php.d/15-xdebug.ini
 echo "xdebug.max_nesting_level = 512" >> /etc/php.d/15-xdebug.ini
 echo "xdebug.idekey = PHPSTORM" >> /etc/php.d/15-xdebug.ini
 

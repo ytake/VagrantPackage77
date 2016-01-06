@@ -44,9 +44,9 @@ EOF
 /bin/systemctl enable hhvm
 /bin/systemctl start hhvm
 /bin/systemctl status hhvm
-/bin/systemctl start  nginx
-/bin/systemctl enable nginx
-/bin/systemctl restart nginx
+# /bin/systemctl start  nginx
+# /bin/systemctl enable nginx
+# /bin/systemctl restart nginx
 
 dd if=/dev/zero of=/EMPTY bs=1M
 rm -f /EMPTY

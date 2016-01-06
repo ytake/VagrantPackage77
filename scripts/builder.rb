@@ -110,6 +110,9 @@ class Builder
       s.path = scriptDir + "/clear-nginx.sh"
     end
 
+    # choose web server
+    web_server = settings["web_server"] ||= "nginx"
+
     settings["sites"].each do |site|
 
       type = site["type"] ||= "php"
@@ -119,9 +122,26 @@ class Builder
       end
 
       config.vm.provision "shell" do |s|
-        s.path = scriptDir + "/web-server-#{type}.sh"
+        s.path = scriptDir + "/#{web_server}-server-#{type}.sh"
         s.args = [site["map"], site["to"], site["port"] ||= "80", site["ssl"] ||= "443"]
       end
+    end
+
+    server_service = "nginx"
+    disable_server = "httpd"
+    if (web_server == "apache")
+      server_service = "httpd"
+      disable_server = "nginx"
+    end
+    config.vm.provision "shell" do |s|
+      s.inline = "/bin/systemctl stop #{disable_server}"
+    end
+    config.vm.provision "shell" do |s|
+      s.inline = "/bin/systemctl disable #{disable_server}"
+    end
+
+    config.vm.provision "shell" do |s|
+      s.inline = "/bin/systemctl restart #{server_service}"
     end
 
     # Configure All Of The Configured Databases

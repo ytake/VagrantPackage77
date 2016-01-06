@@ -20,26 +20,11 @@ block="
     ServerName $1
     ErrorLog "/var/log/httpd/$1-error_log"
     <Directory $2>
+        DirectoryIndex index.php
         AllowOverride All
         Require all granted
     </Directory>
-    <IfModule mod_fastcgi.c>
-        Alias /hhvm /etc/httpd/hhvm
-        Action hhvm-php-extension /hhvm virtual
-        Action hhvm-hack-extension /hhvm virtual
-        FastCgiExternalServer /hhvm -host 127.0.0.1:9000 -pass-header Authorization -idle-timeout 300
-        <FilesMatch \.php$>
-            SetHandler hhvm-php-extension
-        </FilesMatch>
-        <FilesMatch \.hh$>
-            SetHandler hhvm-hack-extension
-        </FilesMatch>
-        <Directory /etc/httpd/hhvm>
-            Options None
-            AllowOverride None
-            Require all granted
-        </Directory>
-    </IfModule>
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:9000$2/\$1
 </VirtualHost>
 <VirtualHost *:443>
     DocumentRoot \"$2\"
@@ -51,26 +36,11 @@ block="
     SSLCertificateKeyFile $PATH_KEY
 
     <Directory $2>
+        DirectoryIndex index.php
         AllowOverride All
         Require all granted
     </Directory>
-    <IfModule mod_fastcgi.c>
-        Alias /hhvm /etc/httpd/hhvm
-        Action hhvm-php-extension /hhvm virtual
-        Action hhvm-hack-extension /hhvm virtual
-        FastCgiExternalServer /hhvm -host 127.0.0.1:9000 -pass-header Authorization -idle-timeout 300
-        <FilesMatch \.php$>
-            SetHandler hhvm-php-extension
-        </FilesMatch>
-        <FilesMatch \.hh$>
-            SetHandler hhvm-hack-extension
-        </FilesMatch>
-        <Directory /etc/httpd/hhvm>
-            Options None
-            AllowOverride None
-            Require all granted
-        </Directory>
-    </IfModule>
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:9000$2/\$1
 </VirtualHost>
 "
 
