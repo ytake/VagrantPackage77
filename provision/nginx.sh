@@ -53,7 +53,16 @@ rm -f /EMPTY
 sync
 
 # for apache
-sudo yum install -y httpd mod_fcgid
+sudo yum install -y httpd
+sudo yum install -y mod_ssl
+sudo mkdir /etc/httpd/fcgi-bin
+sudo mkdir /etc/httpd/hhvm
 
 sed -i "s/User apache/User vagrant/" /etc/httpd/conf/httpd.conf
 sed -i "s/Group apache/Group vagrant/" /etc/httpd/conf/httpd.conf
+
+# append modules
+# cat > /etc/httpd/conf/httpd.conf << EOF
+# LoadModule proxy_module modules/mod_proxy.so
+# LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so
+# EOF
