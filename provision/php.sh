@@ -26,12 +26,9 @@ echo "xdebug.idekey = PHPSTORM" >> /etc/php.d/15-xdebug.ini
 
 echo "opcache.revalidate_freq = 0" >> /etc/php.d/10-opcache.ini
 
-sed -i "s|user = apache|user = nginx|g" /etc/php-fpm.d/www.conf
-sed -i "s|group= apache|group= nginx|g" /etc/php-fpm.d/www.conf
-
 sed -i -e "s/listen = 127.0.0.1:9000/listen = \/var\/run\/php7-fpm.sock/g" /etc/php-fpm.d/www.conf
-sed -i "s/user = nginx/user = vagrant/" /etc/php-fpm.d/www.conf
-sed -i "s/group = apache/group = vagrant/" /etc/php-fpm.d/www.conf
+sed -i "s|user = apache|user = vagrant|g" /etc/php-fpm.d/www.conf
+sed -i "s|group = apache|group = vagrant|g" /etc/php-fpm.d/www.conf
 
 sed -i "s/;listen\.owner.*/listen.owner = vagrant/" /etc/php-fpm.d/www.conf
 sed -i "s/;listen\.group.*/listen.group = vagrant/" /etc/php-fpm.d/www.conf

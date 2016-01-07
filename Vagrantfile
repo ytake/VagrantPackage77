@@ -32,7 +32,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision 'shell', path: './provision/php.sh'
   config.vm.provision 'shell', path: './provision/hhvm.sh'
   config.vm.provision :reload
-  config.vm.provision 'shell', path: './provision/nginx.sh'
+  config.vm.provision 'shell', path: './provision/servers.sh'
 
   if File.exists? aliasesPath then
     config.vm.provision "file", source: aliasesPath, destination: "~/.bash_aliases"

@@ -9,6 +9,7 @@ echo "hhvm.debug.server_error_message" >> /etc/hhvm/server.ini
 echo "display_errors = On" >> /etc/hhvm/server.ini
 echo "html_errors = On" >> /etc/hhvm/server.ini
 echo "error_reporting = 22527" >> /etc/hhvm/server.ini
+echo "hhvm.server.fix_path_info = true" >> /etc/hhvm/server.ini
 
 sed -i "s/date.timezone.*/date.timezone = Asia\/Tokyo/" /etc/hhvm/php.ini
 sed -i "s/ExecStart=\/usr\/bin\/hhvm -c \/etc\/hhvm\/server.ini -c \/etc\/hhvm\/php.ini --user hhvm --mode daemon*/ExecStart=\/usr\/bin\/hhvm -c \/etc\/hhvm\/server.ini -c \/etc\/hhvm\/php.ini --user vagrant --mode daemon/" /usr/lib/systemd/system/hhvm.service

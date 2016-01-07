@@ -52,5 +52,6 @@ block="server {
 "
 
 echo "$block" > "/etc/nginx/conf.d/$1.conf"
+
 /bin/systemctl restart php-fpm
 /bin/systemctl restart nginx

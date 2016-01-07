@@ -20,7 +20,6 @@ block="
     ServerName $1
     ErrorLog "/var/log/httpd/$1-error_log"
     <Directory $2>
-        DirectoryIndex index.php
         AllowOverride All
         Require all granted
     </Directory>
@@ -36,7 +35,6 @@ block="
     SSLCertificateKeyFile $PATH_KEY
 
     <Directory $2>
-        DirectoryIndex index.php
         AllowOverride All
         Require all granted
     </Directory>
@@ -45,3 +43,8 @@ block="
 "
 
 echo "$block" > "/etc/httpd/conf.d/$1.conf"
+# for HACK
+touch $2/.hhconfig
+
+/bin/systemctl restart hhvm
+/bin/systemctl restart httpd

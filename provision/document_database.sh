@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 # install couchbase
-wget http://packages.couchbase.com/releases/4.1.0-dp/couchbase-server-4.1.0-dp-centos7.x86_64.rpm
-rpm -ivh couchbase-server-4.1.0-dp-centos7.x86_64.rpm
+wget http://packages.couchbase.com/releases/4.0.0/couchbase-server-community-4.0.0-centos7.x86_64.rpm
+rpm -ivh couchbase-server-community-4.0.0-centos7.x86_64.rpm
 
 # http://your_configure_ip:8091/
 /bin/systemctl enable couchbase-server
 /bin/systemctl start couchbase-server
 
-rm -rf couchbase-server-4.1.0-dp-centos7.x86_64.rpm
+rm -rf couchbase-server-community-4.0.0-centos7.x86_64.rpm
 
 #install mongodb
 cat > /etc/yum.repos.d/mongodb-org-3.2.repo << EOF

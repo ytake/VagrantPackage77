@@ -4,6 +4,7 @@ memory: 2048
 cpus: 1
 hostname: vagrant-package77
 name: vagrant-package77
+web_server: nginx
 
 authorize: ~/.ssh/id_rsa.pub
 

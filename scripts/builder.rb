@@ -127,21 +127,21 @@ class Builder
       end
     end
 
-    server_service = "nginx"
+    #
+    enable_server = "nginx"
     disable_server = "httpd"
     if (web_server == "apache")
-      server_service = "httpd"
+      enable_server = "httpd"
       disable_server = "nginx"
     end
-    config.vm.provision "shell" do |s|
-      s.inline = "/bin/systemctl stop #{disable_server}"
-    end
-    config.vm.provision "shell" do |s|
-      s.inline = "/bin/systemctl disable #{disable_server}"
-    end
 
+    # disable for disable_server
     config.vm.provision "shell" do |s|
-      s.inline = "/bin/systemctl restart #{server_service}"
+      s.inline = "/bin/systemctl disable #{disable_server} && /bin/systemctl stop #{disable_server}"
+    end
+    # disable for enable_server
+    config.vm.provision "shell" do |s|
+      s.inline = "/bin/systemctl enable #{enable_server} && /bin/systemctl restart #{enable_server}"
     end
 
     # Configure All Of The Configured Databases
@@ -159,15 +159,44 @@ class Builder
       end
     end
 
+    # for optional services
     # Configure Elasticsearch
     if settings.has_key?("elasticsearch")
-      esPort = settings["elasticsearch"]["port"] ||= "9200"
-      config.vm.provision "shell" do |s|
-        s.inline = "sed -i \"s/#http.port: 9200/http.port: $1/\" /etc/elasticsearch/elasticsearch.yml"
-        s.args = [esPort]
+      elasticSearchConfiguration = settings["elasticsearch"];
+      # enable elasticsearch
+      if elasticSearchConfiguration.has_key?("boot")
+        esPort = settings["elasticsearch"]["port"] ||= "9200"
+        config.vm.provision "shell" do |s|
+          s.inline = "sed -i \"s/#http.port: 9200/http.port: $1/\" /etc/elasticsearch/elasticsearch.yml"
+          s.args = [esPort]
+        end
+        config.vm.provision "shell" do |s|
+          s.inline = "/bin/systemctl restart elasticsearch"
+        end
       end
+    else
+      # disable elasticsearch
       config.vm.provision "shell" do |s|
-        s.inline = "/bin/systemctl restart elasticsearch"
+        s.inline = "/bin/systemctl disable elasticsearch && /bin/systemctl stop elasticsearch"
+      end
+    end
+    # Configure fluentd
+    if settings.has_key?("fluentd")
+
+    else
+      # disable fluentd
+      config.vm.provision "shell" do |s|
+        s.inline = "/bin/systemctl disable td-agent && /bin/systemctl stop td-agent"
+      end
+    end
+
+    # Configure mongodb
+    if settings.has_key?("mongodb")
+
+    else
+      # disable mongodb
+      config.vm.provision "shell" do |s|
+        s.inline = "/bin/systemctl disable mongod && /bin/systemctl stop mongod"
       end
     end
 
