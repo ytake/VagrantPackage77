@@ -127,23 +127,6 @@ class Builder
       end
     end
 
-    #
-    enable_server = "nginx"
-    disable_server = "httpd"
-    if (web_server == "apache")
-      enable_server = "httpd"
-      disable_server = "nginx"
-    end
-
-    # disable for disable_server
-    config.vm.provision "shell" do |s|
-      s.inline = "/bin/systemctl disable #{disable_server} && /bin/systemctl stop #{disable_server}"
-    end
-    # disable for enable_server
-    config.vm.provision "shell" do |s|
-      s.inline = "/bin/systemctl enable #{enable_server} && /bin/systemctl restart #{enable_server}"
-    end
-
     # Configure All Of The Configured Databases
     if settings.has_key?("databases")
       settings["databases"].each do |db|
@@ -171,7 +154,7 @@ class Builder
           s.args = [esPort]
         end
         config.vm.provision "shell" do |s|
-          s.inline = "/bin/systemctl restart elasticsearch"
+          s.inline = "/bin/systemctl enable elasticsearch && /bin/systemctl daemon-reload && /bin/systemctl restart elasticsearch"
         end
       end
     else
@@ -182,7 +165,10 @@ class Builder
     end
     # Configure fluentd
     if settings.has_key?("fluentd")
-
+      # enable fluentd
+      config.vm.provision "shell" do |s|
+        s.inline = "/bin/systemctl enable td-agent && /bin/systemctl start td-agent"
+      end
     else
       # disable fluentd
       config.vm.provision "shell" do |s|
@@ -192,12 +178,31 @@ class Builder
 
     # Configure mongodb
     if settings.has_key?("mongodb")
-
+      # disable mongodb
+      config.vm.provision "shell" do |s|
+        s.inline = "/bin/systemctl enable mongod && /bin/systemctl restart mongod"
+      end
     else
       # disable mongodb
       config.vm.provision "shell" do |s|
         s.inline = "/bin/systemctl disable mongod && /bin/systemctl stop mongod"
       end
+    end
+
+    enable_server = "nginx"
+    disable_server = "httpd"
+    if (web_server == "apache")
+      enable_server = "httpd"
+      disable_server = "nginx"
+    end
+
+    # disable for disable_server
+    config.vm.provision "shell" do |s|
+      s.inline = "/bin/systemctl disable #{disable_server} && /bin/systemctl stop #{disable_server}"
+    end
+    # disable for enable_server
+    config.vm.provision "shell" do |s|
+      s.inline = "/bin/systemctl enable #{enable_server} && /bin/systemctl restart #{enable_server}"
     end
 
     # Configure All Of The Server Environment Variables

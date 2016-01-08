@@ -77,8 +77,8 @@ echo "
 </match>
 " >> /etc/td-agent/td-agent.conf
 
-/bin/systemctl start td-agent.service
-/bin/systemctl enable td-agent.service
+# /bin/systemctl start td-agent
+# /bin/systemctl enable td-agent
 
 # for elasticsearch
 rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
@@ -101,6 +101,6 @@ sudo /usr/share/elasticsearch/bin/plugin install polyfractal/elasticsearch-inqui
 sudo /usr/share/elasticsearch/bin/plugin install analysis-kuromoji
 sudo /usr/share/elasticsearch/bin/plugin install analysis-icu
 
-/bin/systemctl start elasticsearch.service
-/bin/systemctl daemon-reload
-/bin/systemctl enable elasticsearch.service
+# /bin/systemctl start elasticsearch
+# /bin/systemctl daemon-reload
+# /bin/systemctl enable elasticsearch

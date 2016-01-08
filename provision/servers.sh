@@ -58,8 +58,5 @@ sudo mkdir /etc/httpd/hhvm
 sed -i "s/User apache/User vagrant/" /etc/httpd/conf/httpd.conf
 sed -i "s/Group apache/Group vagrant/" /etc/httpd/conf/httpd.conf
 
-# append modules
-# cat > /etc/httpd/conf/httpd.conf << EOF
-# LoadModule proxy_module modules/mod_proxy.so
-# LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so
-# EOF
+mv /etc/httpd/conf.d/php.conf /etc/httpd/conf.d/php.conf.dist
+mv /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/welcome.conf.dist

@@ -5,8 +5,8 @@ wget http://packages.couchbase.com/releases/4.0.0/couchbase-server-community-4.0
 rpm -ivh couchbase-server-community-4.0.0-centos7.x86_64.rpm
 
 # http://your_configure_ip:8091/
-/bin/systemctl enable couchbase-server
-/bin/systemctl start couchbase-server
+# /bin/systemctl enable couchbase-server
+# /bin/systemctl start couchbase-server
 
 rm -rf couchbase-server-community-4.0.0-centos7.x86_64.rpm
 
@@ -23,5 +23,5 @@ sudo yum clean all
 sudo yum update
 
 sudo yum install -y mongodb-org
-/bin/systemctl enable mongod
-/bin/systemctl start mongod
+# /bin/systemctl enable mongod
+# /bin/systemctl start mongod

@@ -18,6 +18,10 @@ sudo yum groupinstall 'Development tools'
 sudo yum -y install vim
 sudo yum install -y unzip
 
+sudo yum install -y cronie
+/bin/systemctl enable crond
+/bin/systemctl restart crond
+
 # iptables無効
 iptables -F
 systemctl disable firewalld.service
