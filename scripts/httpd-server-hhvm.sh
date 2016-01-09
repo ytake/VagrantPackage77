@@ -19,18 +19,18 @@ block="
     DocumentRoot \"$2\"
     ServerName $1
     ErrorLog "/var/log/httpd/$1-error_log"
+    DirectoryIndex index.php index.html
     <Directory $2>
         AllowOverride All
         Require all granted
     </Directory>
-    <FilesMatch \.php$>
-        SetHandler "proxy:unix:/var/run/php7-fpm.sock\|fcgi://localhost"
-    </FilesMatch>
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:9000$2/\$1
 </VirtualHost>
 <VirtualHost *:443>
     DocumentRoot \"$2\"
     ServerName $1
     ErrorLog "/var/log/httpd/$1-error_log"
+    DirectoryIndex index.php index.html
 
     SSLEngine on
     SSLCertificateFile $PATH_CRT
@@ -40,13 +40,13 @@ block="
         AllowOverride All
         Require all granted
     </Directory>
-    <FilesMatch \.php$>
-        SetHandler "proxy:unix:/var/run/php7-fpm.sock\|fcgi://localhost"
-    </FilesMatch>
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:9000$2/\$1
 </VirtualHost>
 "
 
 echo "$block" > "/etc/httpd/conf.d/$1.conf"
+# for HACK
+touch $2/.hhconfig
 
-/bin/systemctl restart php-fpm
+/bin/systemctl restart hhvm
 /bin/systemctl restart httpd

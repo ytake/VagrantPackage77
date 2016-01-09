@@ -58,5 +58,8 @@ sudo mkdir /etc/httpd/hhvm
 sed -i "s/User apache/User vagrant/" /etc/httpd/conf/httpd.conf
 sed -i "s/Group apache/Group vagrant/" /etc/httpd/conf/httpd.conf
 
+echo "Mutex fcntl" >> /etc/httpd/conf/httpd.conf
+
 mv /etc/httpd/conf.d/php.conf /etc/httpd/conf.d/php.conf.dist
 mv /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/welcome.conf.dist
+mv /etc/httpd/conf.modules.d/15-php.conf /etc/httpd/conf.modules.d/15-php.conf.bk

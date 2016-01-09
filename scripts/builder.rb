@@ -189,20 +189,10 @@ class Builder
       end
     end
 
-    enable_server = "nginx"
-    disable_server = "httpd"
-    if (web_server == "apache")
-      enable_server = "httpd"
-      disable_server = "nginx"
-    end
-
     # disable for disable_server
-    config.vm.provision "shell" do |s|
-      s.inline = "/bin/systemctl disable #{disable_server} && /bin/systemctl stop #{disable_server}"
-    end
-    # disable for enable_server
-    config.vm.provision "shell" do |s|
-      s.inline = "/bin/systemctl enable #{enable_server} && /bin/systemctl restart #{enable_server}"
+    config.vm.provision "shell", run: "always" do |s|
+      s.path = scriptDir + "/server-switcher.sh"
+      s.args = [web_server]
     end
 
     # Configure All Of The Server Environment Variables
